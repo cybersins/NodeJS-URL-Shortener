@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>URL Shortener</title>
+  </head>
+  <body>
+    URL to shorten: <input type="text" id="url" /><br/>
+    <input type="button" value="Shorten" onclick="javascript: shorten();" /><br/>
+    <span id="response"></span>
+
+    <script>
+      function shorten() {
+        var url = document.getElementById("url").value;
+        var resp = document.getElementById("response");
+        fetch('/new/' + url)
+          .then(function(response) {
+            return response.json()
+          }).then(function(json) {
+            if(!json.success) {
+              resp.innerHTML = "<strong>Error</strong>: " + json.msg;
+            } else {
+              var url = window.location.href + json.id;
+              resp.innerHTML = `<strong>Success!</strong> Here's your url: <a href='${url}'>${$url}</a>.`;
+            }
+          }).catch(function(ex) {
+            resp.innerHTML = "<strong>Error</strong>: " + ex;
+          });
+      }
+    </script>
+  </body>
+</html>
